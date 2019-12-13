@@ -1,0 +1,4 @@
+{
+    "mongoURI": "mongodb://nabil1982:hakima1959@ds353338.mlab.com:53338/mern_app_v2",
+    "jwt_secret": "mysecret"
+}
