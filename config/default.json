@@ -1,4 +1,6 @@
 {
     "mongoURI": "mongodb://nabil1982:hakima1959@ds353338.mlab.com:53338/mern_app_v2",
-    "jwt_secret": "mysecret"
+    "jwt_secret": "mysecret",
+    "clientID": "d2e267be15230a5a0637",
+    "Client_Secret": "e7f9682453e940529f73fee3f33cefa3184048d4"
 }

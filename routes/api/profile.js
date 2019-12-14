@@ -7,6 +7,8 @@ const {
     check,
     validationResult
 } = require('express-validator')
+const config = require('config')
+const request = require('request')
 
 
 //@route GET api/profile/me
@@ -184,6 +186,203 @@ router.delete('/', auth, async (req, res) => {
             })
         }
         res.status(500).send('Server Send!!')
+    }
+})
+
+//@route DEL api/education
+//@desc Add education
+//@access Public
+
+router.put('/experience', [auth, [check('title', 'Title is required!!').not().isEmpty(), check('company', 'Company is required!!').not().isEmpty(), check('from', 'From date is required!!!').not().isEmpty()]], async (req, res) => {
+    const errors = validationResult(req)
+
+    if (!errors.isEmpty()) {
+        return res.status(400).json({
+            erros: errors.array()
+        })
+    }
+
+    const {
+        title,
+        company,
+        location,
+        from,
+        to,
+        current,
+        description
+    } = req.body
+
+    const newExp = {
+        title,
+        company,
+        location,
+        from,
+        to,
+        current,
+        description
+    }
+    try {
+        const profile = await Profile.findOne({
+            user: req.user.id
+        })
+        //profile.experience = []
+        profile.experience.push(newExp)
+        await profile.save()
+        res.json(profile)
+
+    } catch (er) {
+        console.error(er.message)
+        res.status(500).send('Server Error!!')
+    }
+})
+
+//@route DEL api/profile/experience
+//@desc Delete experience user &post
+//@access Public
+
+
+router.delete('/experience/:exp_id', auth, async (req, res) => {
+
+    try {
+        const profile = await Profile.findOne({
+            user: req.user.id
+        })
+
+
+        // get and remove the index
+        const removeIndex = profile.experience
+            .map(item => item.id)
+            .indexOf(req.params.exp_id)
+
+
+        profile.experience.splice(removeIndex, 1)
+        await profile.save()
+
+        res.json(profile)
+
+        // res.json({
+        //     message: 'User Removed'
+        // })
+    } catch (error) {
+        console.error(error.message)
+        if (error.kind == 'ObjectId') {
+            return res.status(400).json({
+                message: "Experience not found !!"
+            })
+        }
+        res.status(500).send('Server Send!!')
+    }
+})
+
+
+
+router.put('/education', [auth, [check('school', 'school is required!!').not().isEmpty(), check('degree', 'Degree is required!!').not().isEmpty(), check('from', 'From date is required!!!').not().isEmpty(), check('fieldofstudy', 'Files Of Study is required!!!')]], async (req, res) => {
+    const errors = validationResult(req)
+
+    if (!errors.isEmpty()) {
+        return res.status(400).json({
+            erros: errors.array()
+        })
+    }
+
+    const {
+        school,
+        degree,
+        fieldofstudy,
+        from,
+        to,
+        current,
+        description
+    } = req.body
+
+    const newEdu = {
+        school,
+        degree,
+        fieldofstudy,
+        from,
+        to,
+        current,
+        description
+    }
+    try {
+        const profile = await Profile.findOne({
+            user: req.user.id
+        })
+        //profile.experience = []
+        profile.education.push(newEdu)
+        await profile.save()
+        res.json(profile)
+
+    } catch (er) {
+        console.error(er.message)
+        res.status(500).send('Server Error!!')
+    }
+})
+
+
+
+router.delete('/education/:edu_id', auth, async (req, res) => {
+
+    try {
+        const profile = await Profile.findOne({
+            user: req.user.id
+        })
+
+
+        // get and remove the index
+        const removeIndex = profile.education
+            .map(item => item.id)
+            .indexOf(req.params.edu_id)
+
+
+        profile.education.splice(removeIndex, 1)
+        await profile.save()
+
+        res.json(profile)
+
+        // res.json({
+        //     message: 'User Removed'
+        // })
+    } catch (error) {
+        console.error(error.message)
+        if (error.kind == 'ObjectId') {
+            return res.status(400).json({
+                message: "Experience not found !!"
+            })
+        }
+        res.status(500).send('Server Send!!')
+    }
+})
+
+
+//@route DEL api/profile/github/"username"
+//@desc Get user repos from Github
+//@access Public
+
+router.get('/github/:usename', async (req, res) => {
+
+    try {
+
+        const options = {
+            uri: `https://api.github.com/users/${req.params.username}/repos?per_page=5&sort=created:asc&client_id=${config.get('clientID')}&client_secret=${config.get('Client_Secret')}`,
+            method: 'GET',
+            headers: {
+                'user-agent': 'node.js'
+            }
+
+        }
+        request(options, (error, response, body) => {
+            if (error) console.error(error)
+            if (response.statusCode !== 200) {
+                res.status(404).json({
+                    message: 'Github not found !!'
+                })
+            }
+            res.json(JSON.parse(body))
+        })
+
+    } catch (error) {
+
     }
 })
 
