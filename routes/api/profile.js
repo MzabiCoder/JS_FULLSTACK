@@ -374,7 +374,7 @@ router.get('/github/:usename', async (req, res) => {
         request(options, (error, response, body) => {
             if (error) console.error(error)
             if (response.statusCode !== 200) {
-                res.status(404).json({
+                return res.status(404).json({
                     message: 'Github not found !!'
                 })
             }
@@ -382,7 +382,12 @@ router.get('/github/:usename', async (req, res) => {
         })
 
     } catch (error) {
-
+        console.error(error.message)
+        if (error.kind == 'ObjectId') {
+            return res.status(400).json({
+                message: "Experience not found !!"
+            })
+        }
     }
 })
 
