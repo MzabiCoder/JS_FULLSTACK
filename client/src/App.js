@@ -10,6 +10,13 @@ import { Provider } from 'react-redux'
 import Alert from './components/alerts/Alert'
 import { LoadUser } from './action/auth'
 import SetAuthToken from './utils/SetAuthToken'
+import Dashboard from './components/dashboard/Dashboard'
+import PrivateRoute from './components/router/PrivateRoute'
+import CreateProfile from './components/profile-forms/CreateProfile'
+import EditProfile from './components/profile-forms/EditProfile'
+import AddExperience from './components/profile-forms/AddExperience'
+import AddEducation from './components/profile-forms/AddEducation'
+ 
 
 
 if (localStorage.token) {
@@ -18,7 +25,7 @@ if (localStorage.token) {
 const App = () => {
   useEffect(() => {
     store.dispatch(LoadUser())
-  },[LoadUser])
+  },[LoadUser()])
     
   return (
     <Provider store={store}>
@@ -30,7 +37,14 @@ const App = () => {
          <Alert/>
          <Switch>
          <Route path='/login' component={Login} />
-         <Route path='/register' component={Register} />
+              <Route path='/register' component={Register} />
+              <PrivateRoute path='/create-profile' component={CreateProfile} />
+              <PrivateRoute path='/add-education' component={AddEducation} />
+
+              <PrivateRoute path='/dashboard' component={Dashboard} />
+              <PrivateRoute path='/edit-profile' component={EditProfile} />
+              <PrivateRoute path='/add-experience' component={AddExperience} />
+
 
          </Switch>
        </section>

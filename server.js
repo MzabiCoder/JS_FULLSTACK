@@ -12,8 +12,6 @@ connectDB()
 
 
 
-
-
 // define routes
 app.use('/api/users', require('./routes/api/users'))
 app.use('/api/auth', require('./routes/api/auth'))
