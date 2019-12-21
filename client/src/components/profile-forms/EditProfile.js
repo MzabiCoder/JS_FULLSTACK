@@ -23,7 +23,7 @@ const EditProfile = ({CreateProfile,history,GetProfile,profile:{profile,loading}
         youtube:loading || !profile.social ? '': profile.social.youtube,
         
       })
-    },[loading])
+    },[GetProfile,loading])
     const [formData, setFormdata] = useState({
         status:'',
         skills:'',

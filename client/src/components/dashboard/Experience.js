@@ -7,7 +7,7 @@ import { remove_experience } from '../../action/profile'
 const Experience = ({experience,remove_experience}) => {
     const experiences = experience.map(exp => (
         <tr key={exp._id}>
-            <td>{experience.company}</td>
+            <td>{exp.company}</td>
             <td className="hise-sm">{exp.title}</td>
             <td>
                 <Moment format="DD/MM/YYYY">{exp.from}</Moment> - {

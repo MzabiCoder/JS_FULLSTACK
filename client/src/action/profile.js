@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { setAlert } from './alert'
 
-import { GET_PROFILE, PROFILE_ERROR,UPDATE_PROFILE,CLEAR_PROFILE,ACCOUNT_DELETED } from './types'
+import { GET_PROFILE, GET_PROFILES,PROFILE_ERROR,UPDATE_PROFILE,CLEAR_PROFILE,ACCOUNT_DELETED,GET_GITHUB } from './types'
 
 export const GetProfile = () => async dispatch => { 
  
@@ -9,6 +9,65 @@ export const GetProfile = () => async dispatch => {
         const res = await axios.get('/api/profile/me')
     dispatch({
         type: GET_PROFILE,
+        payload:res.data
+    })
+        //console.log(res.data)
+    } catch (err) {
+        dispatch({
+            type: PROFILE_ERROR,
+            payload:{msg:err.response.statusText,status:err.response.status}
+        })
+    }
+    
+
+}
+
+export const GetProfiles = () => async dispatch => { 
+    dispatch({
+     type:CLEAR_PROFILE
+ })
+    try {
+        const res = await axios.get('/api/profile')
+    dispatch({
+        type: GET_PROFILES,
+        payload:res.data
+    })
+        //console.log(res.data)
+    } catch (err) {
+        dispatch({
+            type: PROFILE_ERROR,
+            payload:{msg:err.response.statusText,status:err.response.status}
+        })
+    }
+    
+
+}
+
+export const GetProfileByID = (userID) => async dispatch => { 
+ 
+    try {
+        const res = await axios.get(`/api/profile/${userID}`)
+    dispatch({
+        type: GET_PROFILE,
+        payload:res.data
+    })
+        //console.log(res.data)
+    } catch (err) {
+        dispatch({
+            type: PROFILE_ERROR,
+            payload:{msg:err.response.statusText,status:err.response.status}
+        })
+    }
+    
+
+}
+
+export const GetGithubuser = (githun_user) => async dispatch => { 
+ 
+    try {
+        const res = await axios.get(`/api/profile/github/${githun_user}`)
+    dispatch({
+        type: GET_GITHUB,
         payload:res.data
     })
         //console.log(res.data)
@@ -156,7 +215,7 @@ export const del_education = id => async dispatch => {
 export const deleteAccount = () =>async dispatch => {
     if (window.confirm('Are you sure!!')) {
         try {
-            const res = await axios.delete('/api/profile')
+            await axios.delete('/api/profile')
             dispatch({
                 type: CLEAR_PROFILE,
             })

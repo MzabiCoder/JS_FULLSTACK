@@ -31,7 +31,9 @@ const Education = ({education,del_education}) => {
                         <th>School</th>
                         <th className="hide-sm">Degree</th>
                         <th className="hide-sm">Field Of Study</th>
+                        <th className="hide-sm">years</th>
                         <th></th>
+
                     </tr>
                 </thead>
                 <tbody>{educations}</tbody>
