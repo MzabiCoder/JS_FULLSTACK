@@ -43,7 +43,7 @@ const Profile = ({ GetProfileByID, profile: { profile, loading,githubusername}, 
 
                         {githubusername && (
                         
-                            <ProfileGithub username={githubusername} />
+                            <ProfileGithub profile={profile}  />
                             
                     )}
 

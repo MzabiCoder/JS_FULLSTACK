@@ -5,9 +5,9 @@ import { GetGithubuser } from '../../action/profile'
 import { connect } from 'react-redux'
 import Spinner from '../layouts/Spinner'
 
-const ProfileGithub = ({ username,GetGithubuser,repos }) => {
+const ProfileGithub = ({ profile: { githubusername, repos }, GetGithubuser, }) => {
     useEffect(() => {
-        GetGithubuser(username)
+        GetGithubuser(githubusername)
     },[GetGithubuser])
     return (
         <div className="profile-github">

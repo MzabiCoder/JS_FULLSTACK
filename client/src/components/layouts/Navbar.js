@@ -14,6 +14,10 @@ const  Navbar=({logout,auth:{isAuthenticated,loading}})=> {
     <li>
     <Link to="/profiles">Profiles
     </Link>
+      </li>
+      <li>
+    <Link to="/posts">Posts
+    </Link>
   </li>
       
     <li>
